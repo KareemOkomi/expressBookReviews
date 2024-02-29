@@ -25,25 +25,33 @@ public_users.get('/isbn/:isbn',function (req, res) {
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  //Write your code here
-  const Author = req.params.author;
-  //obtain all the keys for the 'books' object.
-  let bookKeys = Object.keys(books);
+  //get the author name from the params
+  const reqAuthor = req.params.author;
+  const booksKeys = Object.keys(books);
+  let booksfilteredAuthor = [];
 
-  //iterate through the 'books' array & check the author matches the one
-  //provided in the request parameters
-  for(const i in bookKeys){
-    if(Object.values(books)[i].author === Author)
-    res.send(Object.values(books)[i]);
+  for(let i = 1; i < booksKeys.length; i++){
+    if(books[0,i].author === reqAuthor){
+        booksfilteredAuthor.push(books[0,i]);
+    }
   }
 
+  res.send(booksfilteredAuthor);
 
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    //get the book title from the params
+    const bookTitle = req.params.title;
+    const bookKeys = Object.keys(books);
+    for(let i = 1; i < bookKeys.lengh; i++){
+        if(books[0,i].title === bookTitle){
+            res.send(books[0,i]);
+            }
+        }
+
+
 });
 
 //  Get book review
