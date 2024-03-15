@@ -44,20 +44,39 @@ public_users.get('/author/:author',function (req, res) {
 public_users.get('/title/:title',function (req, res) {
     //get the book title from the params
     const bookTitle = req.params.title;
-    const bookKeys = Object.keys(books);
-    for(let i = 1; i < bookKeys.lengh; i++){
-        if(books[0,i].title === bookTitle){
-            res.send(books[0,i]);
-            }
-        }
+    let matchedBook = [];
+    const isbnNumbs = Object.keys(books);
 
+    //res.send(books[(isbnNumbs[0])]);
+    
+     //Use the forEach method to iterate through each isbn
+    isbnNumbs.forEach((isbn)=>{
+        if(books[(isbn)].title === bookTitle){
+            matchedBook.push(books[(isbn)]);
+        }
+    })
+
+    res.send(JSON.stringify(matchedBook,null,4));
 
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  //get isbn from parameters
+  const reqIsbn = req.params.isbn;
+  const isbns = Object.keys(books);
+  let theReview = [];
+
+  isbns.forEach((isbn)=>{
+    if(isbn == reqIsbn){
+        theReview.push(books.isbn.reviews);
+    }
+  })
+
+  res.send(theReview);
+
+  //res.send(books[isbns[0]].reviews);
+
 });
 
 module.exports.general = public_users;
