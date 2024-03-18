@@ -5,9 +5,32 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
 
+const doesExist =(username)=>{
+    let usersWithSame = users.filter((user)=>{
+        return user.username === username
+    });
+    if (usersWithSame.length > 0){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 public_users.post("/register", (req,res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const username = req.body.username;
+  const password = req.body.password;
+
+  if(username && password){
+    if(!doesExist(username)){
+        users.push({"username":username,"password":password});
+        return res.status(200).json({message:"User registered successfully, you can now login"});
+    } else{
+        return res.status(400).json({message:"User already exists"});
+    }
+  }
+  return res.status(400).json({message:"Cannot register user!"});
 });
 
 // Get the book list available in the shop
@@ -65,17 +88,13 @@ public_users.get('/review/:isbn',function (req, res) {
   //get isbn from parameters
   const reqIsbn = req.params.isbn;
   const isbns = Object.keys(books);
-  let theReview = [];
 
   isbns.forEach((isbn)=>{
     if(isbn == reqIsbn){
-        theReview.push(books.isbn.reviews);
+        //theReview.push(JSON.stringify(books[isbn].reviews));
+        res.send(books[isbn].reviews);
     }
-  })
-
-  res.send(theReview);
-
-  //res.send(books[isbns[0]].reviews);
+  });
 
 });
 
