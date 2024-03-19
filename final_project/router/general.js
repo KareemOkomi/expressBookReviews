@@ -16,7 +16,6 @@ const doesExist =(username)=>{
     }
 }
 
-
 public_users.post("/register", (req,res) => {
   //Write your code here
   const username = req.body.username;
